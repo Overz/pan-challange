@@ -27,9 +27,15 @@ Environments Example:
 
 ## Project Folder Structure
 
+- `aspects`: aspectj weaver
+  - `routes`: routes aspects
+    - `validations`: validations before enter in the application router
 - `config`: pre configure some classes inside the application
-- `errors`: throwing application errors
-- `events`: handling some application events
+- `controllers`: layers
+- `errors`: throwing/handling application errors
+- `events`: handling events
 - `routes`: application routes only
-	- `controllers`: application controllers
-		- `services`: application services
+  - `controllers`: application controllers
+    - `services`: application services
+- `services`: layers
+- `utils`: whatever

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * de serviços http
  */
 @Getter
-public class ServiceRequestError extends Exception {
+public class ServiceRequestError extends RuntimeException {
 
 	private final HttpStatus status;
 

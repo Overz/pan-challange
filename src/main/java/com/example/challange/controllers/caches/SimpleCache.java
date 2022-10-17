@@ -4,19 +4,14 @@ import com.example.challange.services.impl.SWApiServiceImpl;
 import com.example.challange.services.interfaces.SWApiService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.example.challange.utils.Constants.ACCEPTED_RESOURCES;
-import static com.example.challange.utils.Constants.Qualifiers.SW_API;
 
 @Slf4j
 //@Component
@@ -25,6 +20,7 @@ public class SimpleCache {
 //	@Autowired
 //	@Qualifier(SW_API)
 //	private SWApiService api;
+
 	private static SimpleCache instance;
 
 	@Getter

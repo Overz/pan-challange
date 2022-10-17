@@ -21,15 +21,14 @@ public class Logger {
 		logRequest(joinPoint);
 	}
 
-	/**
-	 * Realiza o log de qualquer entrada/execução/chamada
-	 * dos metodos do pacote controller
-	 */
 	@Before("execution(* com.example.challange.routes..*(..))")
 	public void beforeRoutes(JoinPoint joinPoint) {
 		logRequest(joinPoint);
 	}
 
+	/**
+	 * log every request passed in routes and validations
+	 */
 	public void logRequest(JoinPoint joinPoint) {
 		String msg =
 			"[REQUEST_INFO] IP: '{}', METHOD: '{}', PATH: '{}', TARGET: '{}', AUTH_TYPE: '{}', CONTENT_TYPE: '{}', CONTENT_LENGTH: '{}', QUERY: '{}', ARGS: '{}'";

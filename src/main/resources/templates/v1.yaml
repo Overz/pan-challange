@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: "Documentação do módulo @project.artifactId@"
+  title: "Documentação do módulo '@project.artifactId@'"
   description: |
     "@project.description@"
   version: "@project.version@"
@@ -10,10 +10,10 @@ servers:
 paths:
   "/":
     get:
-      description: "bunda"
+      description: "batata"
       responses:
         200:
-          description: "retorna a bunda"
+          description: "retorna a batata"
           content:
             "application/json":
               schema:

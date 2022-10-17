@@ -6,7 +6,6 @@ import static com.example.challange.utils.Constants.SW_API_URL;
 import com.example.challange.errors.ServiceRequestError;
 import com.example.challange.services.interfaces.SWApiService;
 import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

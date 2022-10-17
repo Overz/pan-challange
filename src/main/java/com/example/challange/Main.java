@@ -17,7 +17,7 @@ public class Main {
 
 		try {
 			// setup instance and cache;
-		  SimpleCache.getInstance();
+			SimpleCache.getInstance();
 		} catch (Exception e) {
 			log.error("Error setting up cache", e);
 			System.exit(1);

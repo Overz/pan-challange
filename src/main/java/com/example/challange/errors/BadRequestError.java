@@ -7,7 +7,7 @@ import lombok.Getter;
  * por parte do client durante a validação de dados.
  */
 @Getter
-public class BadRequestError extends Exception {
+public class BadRequestError extends RuntimeException {
 
 	private final String message;
 

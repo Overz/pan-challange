@@ -27,13 +27,13 @@ class SwControllerTest extends Assertions {
 	@BeforeAll
 	static void setup() {
 		Setup.envs();
-		SimpleCache.getInstance();
+		//		SimpleCache.getInstance();
 	}
 
 	@Test
 	@SneakyThrows(Exception.class)
 	@DisplayName("")
 	void test01() {
-		System.out.println("bunda");
+		System.out.println("batata");
 	}
 }

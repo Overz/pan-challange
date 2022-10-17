@@ -1,0 +1,23 @@
+---
+debug: "false"
+mode: "prod"
+
+server:
+  error:
+    include-stacktrace: "never"
+
+spring:
+  devtools:
+    livereload:
+      enabled: "${debug}"
+    add-properties: "${debug}"
+
+springdoc:
+  api-docs:
+    enabled: false
+
+logging:
+  file:
+    name: "${logging.file.path}/${currentTimeMillis}.log"
+    path: "${APP_LOGS:${spring.application.name}/${version}}"
+---

@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  sw:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: sw-srv
+    restart: always
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    networks:
+      app:
+
+  openapi:
+    image: ibraimgm/swaggerui-server:latest
+    restart: always
+    hostname: swagger-srv
+    networks:
+      app:
+    command: [
+      "swaggerui-server",
+      "-location",
+      "/swagger",
+      "-docs",
+      "SW_V1=http://sw-srv:3000/challange/static/swagger/v1.yaml"
+    ]
+
+networks:
+  app:
+    external: true
+    name: "sw-net"

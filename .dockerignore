@@ -1,0 +1,16 @@
+### LOCAL
+target
+tmp
+docs
+test
+scripts
+*.md
+.*
+gen
+out
+build
+dist
+docker-compose.yaml
+Dockerfile
+*.iml
+setup.cmd

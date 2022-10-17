@@ -1,0 +1,13 @@
+---
+debug: "true"
+mode: "dev"
+
+server:
+  error:
+    include-stacktrace: "always"
+
+spring:
+  devtools:
+    livereload:
+      enabled: "${debug}"
+---

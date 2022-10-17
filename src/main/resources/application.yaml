@@ -1,0 +1,50 @@
+debug: ${DEBUG:false}
+mode: "template"
+version: '@project.version@'
+
+server:
+  port: "${APP_PORT:3000}"
+  servlet:
+    encoding:
+      charset: "UTF-8"
+    context-path: ""
+  error:
+    include-stacktrace: "never"
+
+spring:
+  application:
+    name: '@project.artifactId@'
+  gson:
+    pretty-printing: "true"
+    serialize-nulls: "true"
+    exclude-fields-without-expose-annotation: "true"
+  mvc:
+    static-path-pattern: "/${spring.application.name}/static/**"
+
+logging:
+  charset:
+    console: "UTF-8"
+    file: "UTF-8"
+  file:
+    name: "${logging.file.path}/${mode}-${currentTimeMillis}.log"
+    path: "${APP_LOGS:./tmp/logs/${spring.application.name}/${version}}"
+  logback:
+    rollingpolicy:
+      clean-history-on-start: "${debug}"
+      max-file-size: "20MB"
+
+springdoc:
+  api-docs:
+    path: "/${spring.application.name}/docs/specs"
+    version: OPENAPI_3_0
+    enabled: true
+
+custom:
+  cors:
+    methods: "POST,GET,PUT,OPTIONS,HEAD"
+    origins: '*'
+    credentials: true
+  rest:
+    connection:
+      request-timeout: 10000
+      response-timeout: 10000

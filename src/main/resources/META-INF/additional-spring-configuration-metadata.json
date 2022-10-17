@@ -1,0 +1,48 @@
+{
+	"properties": [
+		{
+			"name": "mode",
+			"type": "java.lang.String",
+			"description": "Ambiente em execução."
+		},
+		{
+			"name": "version",
+			"type": "java.lang.String",
+			"description": "Versão do sistema."
+		},
+		{
+			"name": "custom.cors.methods",
+			"type": "java.util.List<java.lang.String>",
+			"description": "Lista de métodos aceito na API.",
+			"defaultValue": [
+				"GET",
+				"POST",
+				"PUT",
+				"DELETE",
+				"HEAD",
+				"OPTIONS",
+				"PATCH"
+			]
+		},
+		{
+			"name": "custom.cors.origins",
+			"type": "java.util.List",
+			"description": "Lista de ip's aceitos para acessar a API."
+		},
+		{
+			"name": "custom.cors.credentials",
+			"type": "java.lang.Boolean",
+			"description": "Deve habilitar/permitir credenciais na aplicação."
+		},
+		{
+			"name": "custom.rest.connection.response-timeout",
+			"type": "java.lang.String",
+			"description": "RestTempalte class Request Timeout."
+		},
+		{
+			"name": "custom.rest.connection.request-timeout",
+			"type": "java.lang.String",
+			"description": "RestTempalte class Response Timeout."
+		}
+	]
+}

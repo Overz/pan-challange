@@ -6,17 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
 public class SwController {
 
+	@Autowired
+	private SimpleCache simpleCache;
+
 	/**
 	 * reset the cache
 	 */
 	public void reset() {
-		SimpleCache.getInstance().reset();
+		simpleCache.reset();
 	}
 
 	/**
@@ -28,7 +32,7 @@ public class SwController {
 	 * @see com.example.challange.aspects.routes.SwValidations validation
 	 */
 	public Object findResource(String resource) {
-		return SimpleCache.getInstance().getData().get(resource).getData();
+		return SimpleCache.getData().get(resource).getData();
 	}
 
 	/**
@@ -41,7 +45,7 @@ public class SwController {
 	 * @see com.example.challange.aspects.routes.SwValidations validation
 	 */
 	public Object findOneResource(String resource, int index) {
-		Map<String, BaseCache<?>> cache = SimpleCache.getInstance().getData();
+		Map<String, BaseCache<?>> cache = SimpleCache.getData();
 		Map<String, Object> content = (Map<String, Object>) cache.get(resource).getData();
 		List<Map<String, Object>> results = (List<Map<String, Object>>) content.get("results");
 		return results.get(index);
@@ -52,6 +56,8 @@ public class SwController {
 	 *
 	 * It will look if is able to modify the content
 	 * using aspect validation, otherwise an error will be throwed.
+	 *
+	 * @see com.example.challange.aspects.routes.SwValidations validation
 	 */
 	public void updateOneResource(String resource, int index, Map<String, Object> body) {
 		Map<String, Object> item = (Map<String, Object>) findOneResource(resource, index);

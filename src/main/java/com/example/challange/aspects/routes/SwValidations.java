@@ -6,6 +6,7 @@ import static com.example.challange.utils.Constants.EDITABLE_RESOURCES;
 import com.example.challange.controllers.caches.BaseCache;
 import com.example.challange.controllers.caches.SimpleCache;
 import com.example.challange.errors.BadRequestError;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,10 +65,10 @@ public class SwValidations {
 	private Map<String, Object> checkResource(String resource, Integer index, boolean canGet)
 		throws BadRequestError {
 		if (DEBUG) {
-			return null;
+			return Collections.emptyMap();
 		}
 
-		Map<String, BaseCache<?>> cache = SimpleCache.getInstance().getData();
+		Map<String, BaseCache<?>> cache = SimpleCache.getData();
 		if (!cache.containsKey(resource)) {
 			throw new BadRequestError("resource '" + resource + "' could not be found!");
 		}

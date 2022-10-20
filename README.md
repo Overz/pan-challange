@@ -1,4 +1,4 @@
-# Challange
+# Backend Challange - Pan Bank - [Challange](./docs/challange.md)
 
 Tests are disabled
 
@@ -20,7 +20,7 @@ Environments Example:
 ```json
 {
 	"DEBUG": false,
-	"ACCEPTED_RESOURCES": ["films", "peoples"],
+	"ACCEPTED_RESOURCES": "films,peoples",
 	"EDITABLE_RESOURCES": { "films": ["opening_crawl"] }
 }
 ```

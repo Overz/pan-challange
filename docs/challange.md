@@ -26,5 +26,3 @@ requisitos:
 Envie o link do seu projeto no git para avaliação.
 
 Testes são muito bem-vindos
-
-

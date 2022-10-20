@@ -1,45 +1,32 @@
 package com.example.challange.controllers.caches;
 
-import com.example.challange.services.impl.SWApiServiceImpl;
-import com.example.challange.services.interfaces.SWApiService;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.RestTemplate;
+import static com.example.challange.utils.Constants.ACCEPTED_RESOURCES;
+import static com.example.challange.utils.Constants.Qualifiers.SW_API;
 
+import com.example.challange.services.interfaces.SWApiService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.example.challange.utils.Constants.ACCEPTED_RESOURCES;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-//@Component
+@Component
 public class SimpleCache {
 
-//	@Autowired
-//	@Qualifier(SW_API)
-//	private SWApiService api;
-
-	private static SimpleCache instance;
+	@Autowired
+	@Qualifier(SW_API)
+	private SWApiService api;
 
 	@Getter
-	private final Map<String, BaseCache<?>> data = new HashMap<>();
+	private static final Map<String, BaseCache<?>> data = new HashMap<>();
 
-	private SimpleCache() {
-		setup();
-	}
-
-	public static SimpleCache getInstance() {
-		if (instance == null) {
-			instance = new SimpleCache();
-		}
-		return instance;
-	}
-
-	private void setup() {
+	public void setup() {
 		try {
-			SWApiService api = new SWApiServiceImpl(new RestTemplate());
 			Map<String, String> resources = api.getResources();
 			Set<Map.Entry<String, String>> entrySet = resources.entrySet();
 

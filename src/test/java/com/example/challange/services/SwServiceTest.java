@@ -1,8 +1,13 @@
 package com.example.challange.controllers;
 
+import com.example.challange.File;
 import com.example.challange.Setup;
+import com.example.challange.controllers.caches.BaseCache;
+import com.example.challange.controllers.caches.ContentCache;
+import com.example.challange.controllers.caches.ResultCache;
 import com.example.challange.controllers.caches.SimpleCache;
 import com.example.challange.services.impl.SWApiServiceImpl;
+import com.example.challange.utils.Json;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,7 +18,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith({ MockitoExtension.class, SpringExtension.class })
 class SwControllerTest extends Assertions {
@@ -22,18 +31,19 @@ class SwControllerTest extends Assertions {
 	SimpleCache cache;
 
 	@Mock
-	SWApiServiceImpl rest;
+	SWApiServiceImpl api;
 
 	@BeforeAll
 	static void setup() {
 		Setup.envs();
-		//		SimpleCache.getInstance();
 	}
 
 	@Test
 	@SneakyThrows(Exception.class)
-	@DisplayName("")
+	@DisplayName("should return the content when ")
 	void test01() {
-		System.out.println("batata");
+		byte[] content = File.readFile("/cache/mock.json");
+		Map<String, Object> mock = Json.jsonToMap(new String(content));
+		when(api.getResourceContent(any(String.class))).thenReturn(mock);
 	}
 }

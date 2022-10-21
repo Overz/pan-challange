@@ -1,6 +1,6 @@
 package com.example.challange;
 
-import com.example.challange.controllers.caches.SimpleCache;
+import com.example.challange.utils.SimpleCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

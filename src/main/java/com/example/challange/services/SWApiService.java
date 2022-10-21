@@ -1,10 +1,9 @@
-package com.example.challange.services.impl;
+package com.example.challange.services;
 
 import static com.example.challange.utils.Constants.Qualifiers.SW_API;
 import static com.example.challange.utils.Constants.SW_API_URL;
 
 import com.example.challange.errors.ServiceRequestError;
-import com.example.challange.services.interfaces.SWApiService;
 import java.util.Map;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,22 +18,20 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Service(SW_API)
 @NoArgsConstructor
-public class SWApiServiceImpl implements SWApiService {
+public class SWApiService {
 
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public SWApiServiceImpl(RestTemplate restTemplate) {
+	public SWApiService(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
-	@Override
 	public Map<String, String> getResources() throws RestClientException, ServiceRequestError {
 		ResponseEntity<Map> res = restTemplate.exchange(SW_API_URL, HttpMethod.GET, null, Map.class);
 		return getBody(res);
 	}
 
-	@Override
 	public Map<String, Object> getResourceContent(String url)
 		throws RestClientException, ServiceRequestError {
 		ResponseEntity<Map> res = restTemplate.exchange(url, HttpMethod.GET, null, Map.class);

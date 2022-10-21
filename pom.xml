@@ -25,6 +25,9 @@
 		<gson.version>2.9.1</gson.version>
 		<aspectj.version>1.9.9.1</aspectj.version>
 		<swagger.version>1.6.11</swagger.version>
+		<hibernate.version>6.1.4.Final</hibernate.version>
+		<flyway.version>9.5.0</flyway.version>
+		<sqlite.version>3.39.3.0</sqlite.version>
 
 		<!-- maven -->
 		<maven.surefire.version>2.22.2</maven.surefire.version>
@@ -37,7 +40,7 @@
 		<!-- testes -->
 		<junit-jupiter.version>5.9.0</junit-jupiter.version>
 		<mockito-core.version>4.8.0</mockito-core.version>
-		<mockito.byte-buddy.version>1.12.16</mockito.byte-buddy.version>
+		<mockito.byte-buddy.version>1.12.18</mockito.byte-buddy.version>
 
 		<!-- linters/formatters/styles -->
 		<prettier.version>0.16</prettier.version>
@@ -115,6 +118,35 @@
 			<version>${maven-resource-plugin.version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>${sqlite.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

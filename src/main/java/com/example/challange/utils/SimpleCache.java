@@ -1,9 +1,10 @@
-package com.example.challange.controllers.caches;
+package com.example.challange.utils;
 
 import static com.example.challange.utils.Constants.ACCEPTED_RESOURCES;
 import static com.example.challange.utils.Constants.Qualifiers.SW_API;
 
-import com.example.challange.services.interfaces.SWApiService;
+import com.example.challange.entities.SWBaseDTO;
+import com.example.challange.services.SWApiService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class SimpleCache {
 	private SWApiService api;
 
 	@Getter
-	private static final Map<String, BaseCache<?>> data = new HashMap<>();
+	private static final Map<String, SWBaseDTO<?>> data = new HashMap<>();
 
 	public void setup() {
 		try {
@@ -43,7 +44,7 @@ public class SimpleCache {
 					item.put("version", 0);
 				}
 
-				data.put(key, new BaseCache<>(url, content));
+				data.put(key, new SWBaseDTO<>(url, content));
 			}
 		} catch (Exception e) {
 			log.error("Service was not able to request or cache the data", e);

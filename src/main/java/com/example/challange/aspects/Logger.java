@@ -16,13 +16,18 @@ public class Logger {
 	@Autowired
 	private HttpServletRequest req;
 
-	@Before("execution(* com.example.challange.aspects.routes..*(..))")
+	//	@Before("execution(* com.example.challange.aspects.routes..*(..))")
 	public void beforeValidations(JoinPoint joinPoint) {
 		logRequest(joinPoint);
 	}
 
-	@Before("execution(* com.example.challange.routes..*(..))")
+	//	@Before("execution(* com.example.challange.routes..*(..))")
 	public void beforeRoutes(JoinPoint joinPoint) {
+		logRequest(joinPoint);
+	}
+
+	@Before("execution(* com.example.challange.controllers..*(..))")
+	public void beforeControllers(JoinPoint joinPoint) {
 		logRequest(joinPoint);
 	}
 

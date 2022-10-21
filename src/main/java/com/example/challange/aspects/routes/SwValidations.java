@@ -3,8 +3,8 @@ package com.example.challange.aspects.routes;
 import static com.example.challange.utils.Constants.DEBUG;
 import static com.example.challange.utils.Constants.EDITABLE_RESOURCES;
 
-import com.example.challange.controllers.caches.BaseCache;
-import com.example.challange.controllers.caches.SimpleCache;
+import com.example.challange.utils.SimpleCache;
+import com.example.challange.entities.SWBaseDTO;
 import com.example.challange.errors.BadRequestError;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
@@ -20,26 +19,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwValidations {
 
-	@Before(
-		value = "execution(* com.example.challange.routes.sw.SwRouter.getResource(..)) && args(resource)",
-		argNames = "resource"
-	)
+	//	@Before(
+	//		value = "execution(* com.example.challange.routes.sw.SwRouter.getResource(..)) && args(resource)",
+	//		argNames = "resource"
+	//	)
 	public void getSwResource(String resource) throws BadRequestError {
 		checkResource(resource);
 	}
 
-	@Before(
-		value = "execution(* com.example.challange.routes.sw.SwRouter.getOneResource(..)) && args(resource, index)",
-		argNames = "resource,index"
-	)
+	//	@Before(
+	//		value = "execution(* com.example.challange.routes.sw.SwRouter.getOneResource(..)) && args(resource, index)",
+	//		argNames = "resource,index"
+	//	)
 	public void getSwOneResource(String resource, Integer index) throws BadRequestError {
 		checkResource(resource, index, false);
 	}
 
-	@Before(
-		value = "execution(* com.example.challange.routes.sw.SwRouter.updateItem(..)) && args(resource, index, body)",
-		argNames = "resource,index,body"
-	)
+	//	@Before(
+	//		value = "execution(* com.example.challange.routes.sw.SwRouter.updateItem(..)) && args(resource, index, body)",
+	//		argNames = "resource,index,body"
+	//	)
 	public void swValidateRequestBody(String resource, Integer index, Map<String, Object> body)
 		throws BadRequestError {
 		checkResource(resource, index, false);
@@ -68,7 +67,7 @@ public class SwValidations {
 			return Collections.emptyMap();
 		}
 
-		Map<String, BaseCache<?>> cache = SimpleCache.getData();
+		Map<String, SWBaseDTO<?>> cache = SimpleCache.getData();
 		if (!cache.containsKey(resource)) {
 			throw new BadRequestError("resource '" + resource + "' could not be found!");
 		}

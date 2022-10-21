@@ -1,4 +1,4 @@
-package com.example.challange.controllers.caches;
+package com.example.challange.entities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResultCache implements Serializable {
+public class SWDto implements Serializable {
+	public static final String SW_TABLE = "sw";
+	public static final String SW_ID = "id";
+	public static final int SW_SIZE = 10;
 
 	@Expose
 	@SerializedName("version")

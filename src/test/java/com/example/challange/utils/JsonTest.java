@@ -1,6 +1,6 @@
 package com.example.challange.utils;
 
-import com.example.challange.controllers.caches.ResultCache;
+import com.example.challange.entities.SWResultDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 
 class JsonTest extends Assertions {
 
-	private ResultCache mockLoginBookDto() {
-		ResultCache dto = new ResultCache();
+	private SWResultDTO mockLoginBookDto() {
+		SWResultDTO dto = new SWResultDTO();
 		dto.setEdited("batata");
 		return dto;
 	}
@@ -21,9 +21,9 @@ class JsonTest extends Assertions {
 		return "{\"edited\": \"batata\", \"eye_color\": \"batata\"}";
 	}
 
-	private List<ResultCache> mockList() {
-		List<ResultCache> l = new ArrayList<>();
-		ResultCache dto = mockLoginBookDto();
+	private List<SWResultDTO> mockList() {
+		List<SWResultDTO> l = new ArrayList<>();
+		SWResultDTO dto = mockLoginBookDto();
 		l.add(dto);
 		dto.setEye_color("batata");
 		l.add(dto);
@@ -33,7 +33,7 @@ class JsonTest extends Assertions {
 	@Test
 	@DisplayName("deve serializar o DTO par a Json informando a classe como auxilio")
 	void test01() {
-		String json = Json.toJson(mockLoginBookDto(), ResultCache.class);
+		String json = Json.toJson(mockLoginBookDto(), SWResultDTO.class);
 		assertNotNull(json);
 		assertTrue(json.length() > 10);
 	}
@@ -56,7 +56,7 @@ class JsonTest extends Assertions {
 	@Test
 	@DisplayName("deve serializar um Json para DTO com auxilio da classe")
 	void test04() {
-		ResultCache dto = Json.fromJson(mockJson(), ResultCache.class);
+		SWResultDTO dto = Json.fromJson(mockJson(), SWResultDTO.class);
 		assertNotNull(dto);
 		assertEquals("batata", dto.getEdited());
 	}
@@ -73,14 +73,14 @@ class JsonTest extends Assertions {
 	@DisplayName("deve serializar um json para array da classe informada")
 	void test06() {
 		String json = Json.listToJson(mockList());
-		ResultCache[] l = Json.jsonToArray(json, ResultCache[].class);
+		SWResultDTO[] l = Json.jsonToArray(json, SWResultDTO[].class);
 		assertEquals(2, l.length);
 		assertEquals("batata", l[0].getEdited());
 		assertEquals("batata", l[1].getEye_color());
 		assertThrows(
 			IndexOutOfBoundsException.class,
 			() -> {
-				ResultCache dto = l[3];
+				SWResultDTO dto = l[3];
 			}
 		);
 	}
@@ -88,7 +88,7 @@ class JsonTest extends Assertions {
 	@Test
 	@DisplayName("deve serializar um json para lista")
 	void teste07() {
-		List<ResultCache> l = Json.jsonArrayToList(Json.listToJson(mockList()), ResultCache[].class);
+		List<SWResultDTO> l = Json.jsonArrayToList(Json.listToJson(mockList()), SWResultDTO[].class);
 		assertNotNull(l);
 		assertFalse(l.isEmpty());
 		assertEquals(2, l.size());
@@ -97,7 +97,7 @@ class JsonTest extends Assertions {
 		assertThrows(
 			IndexOutOfBoundsException.class,
 			() -> {
-				ResultCache loginBookDTO = l.get(3);
+				SWResultDTO loginBookDTO = l.get(3);
 			}
 		);
 	}

@@ -1,11 +1,9 @@
 package com.example.challange.services;
 
-import static com.example.challange.utils.Constants.Qualifiers.SW_API;
 import static com.example.challange.utils.Constants.SW_API_URL;
 
 import com.example.challange.errors.ServiceRequestError;
 import java.util.Map;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -16,16 +14,11 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
-@Service(SW_API)
-@NoArgsConstructor
+@Service
 public class SWApiService {
 
 	@Autowired
 	private RestTemplate restTemplate;
-
-	public SWApiService(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
-	}
 
 	public Map<String, String> getResources() throws RestClientException, ServiceRequestError {
 		ResponseEntity<Map> res = restTemplate.exchange(SW_API_URL, HttpMethod.GET, null, Map.class);

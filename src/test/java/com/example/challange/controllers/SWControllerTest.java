@@ -7,9 +7,8 @@ import com.example.challange.File;
 import com.example.challange.Setup;
 import com.example.challange.services.SWApiService;
 import com.example.challange.utils.Json;
-import java.util.Map;
-
 import com.example.challange.utils.SimpleCache;
+import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class SWControllerTest extends Assertions {
 
 	@InjectMocks
-    SimpleCache cache;
+	SimpleCache cache;
 
 	@Mock
 	SWApiService api;

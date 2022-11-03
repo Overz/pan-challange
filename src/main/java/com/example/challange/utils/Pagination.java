@@ -1,6 +1,16 @@
 package com.example.challange.utils;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,21 +21,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pagination implements Pageable, Serializable {
+public class Pagination<T> implements Pageable {
+
 	private int page;
 	private int pageSize;
 	private Long totalRecords;
-	private Object data;
+	private List<T> data;
 	private Sort sort;
 
 	@Override
@@ -44,11 +49,13 @@ public class Pagination implements Pageable, Serializable {
 	}
 
 	@Override
+	@Nonnull
 	public Sort getSort() {
 		return this.sort;
 	}
 
 	@Override
+	@Nonnull
 	public Pagination next() {
 		setPage(getPage() + getPageSize());
 		return this;
@@ -63,17 +70,20 @@ public class Pagination implements Pageable, Serializable {
 	}
 
 	@Override
+	@Nonnull
 	public Pageable previousOrFirst() {
 		return hasPrevious() ? previous() : first();
 	}
 
 	@Override
+	@Nonnull
 	public Pageable first() {
 		setPage(0);
 		return this;
 	}
 
 	@Override
+	@Nonnull
 	public Pageable withPage(int pageNumber) {
 		setPage(pageNumber);
 		return this;
@@ -84,74 +94,88 @@ public class Pagination implements Pageable, Serializable {
 		return this.page > pageSize;
 	}
 
-	public Pagination execute(JpaRepository repo) {
-		Object data = getData();
+	public Pagination<T> execute(JpaRepository repo) {
+		return execute(repo, null);
+	}
 
-		Page<?> page = data != null ?
-			repo.findAll(Example.of(data), this) :
-			repo.findAll(this);
+	public Pagination<T> execute(JpaRepository repo, Object example) {
+		Page<T> page = example != null ? repo.findAll(Example.of(example), this) : repo.findAll(this);
 
 		setTotalRecords(page.getTotalElements());
 		setData(page.stream().collect(Collectors.toList()));
-
 		return this;
 	}
 
-	public static Pagination buildPagination(int page, int pageSize, String sort, Object o) {
-		String[] content = sort.split(",");
-		Sort.Direction direction = Sort.Direction.fromString(content[1]);
-		Pagination.PaginationBuilder builder = Pagination.builder();
+	private static boolean canOrder(String value) {
+		return (
+			value != null &&
+			!value.isEmpty() &&
+			(
+				value.equalsIgnoreCase(Sort.Direction.ASC.name()) ||
+				value.equalsIgnoreCase(Sort.Direction.DESC.name())
+			)
+		);
+	}
 
-		Field[] fields = o.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			SerializedName serial = field.getAnnotation(SerializedName.class);
-			if (serial != null && serial.value().equalsIgnoreCase(content[0])) {
-				builder.sort(Sort.by(direction, serial.alternate()[0]));
-				break;
-			}
+	private static <T> Sort getSort(PageRequest pageRequest, Class<T> cls) {
+		String order = pageRequest.getOrder();
+		String sort = pageRequest.getSort();
+		Sort.Direction direction = canOrder(order)
+			? Sort.Direction.fromString(order)
+			: Sort.Direction.ASC;
+
+		if (cls == null) {
+			return Sort.by(direction);
 		}
 
-		return builder.build();
-	}
-
-	private static boolean isSortable(String value, Sort.Direction direction) {
-		return value.equalsIgnoreCase(direction.name());
-	}
-
-	public static <T> Pagination buildPagination(int page, int pageSize, String sort, Class<T> cls) {
-		PaginationBuilder builder = Pagination.builder().page(page).pageSize(pageSize);
-
-		// name,asc
+		List<String> sortableFields = new ArrayList<>();
 		if (sort != null && sort.length() > 0) {
 			Field[] fields = cls.getFields();
-			String[] content = sort.split(",");
-			if (content.length > 0) {
-				Sort.Direction direction = Sort.Direction.ASC;
-
-				if (content.length >= 2 && isSortable(content[1], Sort.Direction.ASC) || isSortable(content[1], Sort.Direction.DESC)) {
-					direction = Sort.Direction.fromString(content[1]);
-
-					for (Field f : fields) {
-						SerializedName serial = f.getAnnotation(SerializedName.class);
-						if (serial.value().equalsIgnoreCase(content[0])) {
-							builder.sort(Sort.by(direction, f.getName()));
-						}
-					}
-				} else {
-					builder.sort(Sort.by(direction));
+			for (Field f : fields) {
+				SerializedName serial = f.getAnnotation(SerializedName.class);
+				if (serial != null && serial.value().equalsIgnoreCase(sort)) {
+					sortableFields.add(f.getName());
 				}
 			}
 		}
 
-		return builder.build();
+		return Sort.by(direction, sortableFields.toArray(new String[0]));
 	}
 
-	public Object toDTO() {
+	public static <T> Pagination buildPagination(PageRequest pageRequest, Class<T> cls) {
+		return Pagination
+			.builder()
+			.page(pageRequest.getPage())
+			.pageSize(pageRequest.getPageSize())
+			.sort(getSort(pageRequest, cls))
+			.build();
+	}
+
+	public Map<String, Object> toDTO() {
 		Map<String, Object> response = new HashMap<>();
 		response.put("page", getPage());
 		response.put("pageSize", getPageSize());
 		response.put("totalRecords", getTotalRecords());
 		response.put("data", getData());
 		return response;
+	}
+
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class PageRequest {
+
+		@Expose
+		private int page = 0;
+
+		@Expose
+		private int pageSize = 20;
+
+		@Expose
+		@Nullable
+		private String sort = null;
+
+		@Expose
+		private String order = "ASC";
 	}
 }

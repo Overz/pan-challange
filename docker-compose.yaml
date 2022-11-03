@@ -1,34 +1,71 @@
 version: "3.9"
 
 services:
-  sw:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    hostname: sw-srv
+#  sw:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    hostname: sw-srv
+#    restart: always
+#    expose:
+#      - "3000"
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      app:
+
+#  openapi:
+#    image: ibraimgm/swaggerui-server:latest
+#    restart: always
+#    hostname: swagger-srv
+#    depends_on:
+#      - sw
+#    networks:
+#      app:
+#    command: [
+#      "swaggerui-server",
+#      "-location",
+#      "/swagger",
+#      "-docs",
+#      "SW_V1=http://sw-srv:3000/challange/static/swagger/v1.yaml"
+#    ]
+
+  postgres:
+    image: postgres:14
     restart: always
-    expose:
-      - "3000"
+    hostname: postgres-srv
+    environment:
+      POSTGRES_DB: starwars
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     ports:
-      - "3000:3000"
+      - '5432:5432'
+    expose:
+      - 5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
     networks:
       app:
 
-  openapi:
-    image: ibraimgm/swaggerui-server:latest
+  adminer:
+    image: adminer:latest
     restart: always
-    hostname: swagger-srv
+    hostname: adm-srv
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres-srv
+    ports:
+      - '8080:8080'
+    expose:
+      - 8080
     networks:
       app:
-    command: [
-      "swaggerui-server",
-      "-location",
-      "/swagger",
-      "-docs",
-      "SW_V1=http://sw-srv:3000/challange/static/swagger/v1.yaml"
-    ]
 
 networks:
   app:
     external: true
     name: "sw-net"
+
+volumes:
+  postgres:
+    name: postgres-starwars

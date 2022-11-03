@@ -3,9 +3,8 @@ package com.example.challange.aspects.routes;
 import static com.example.challange.utils.Constants.DEBUG;
 import static com.example.challange.utils.Constants.EDITABLE_RESOURCES;
 
-import com.example.challange.utils.SimpleCache;
-import com.example.challange.entities.SWBaseDTO;
 import com.example.challange.errors.BadRequestError;
+import com.example.challange.utils.SimpleCache;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,62 +18,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwValidations {
 
-	//	@Before(
-	//		value = "execution(* com.example.challange.routes.sw.SwRouter.getResource(..)) && args(resource)",
-	//		argNames = "resource"
-	//	)
-	public void getSwResource(String resource) throws BadRequestError {
-		checkResource(resource);
-	}
-
-	//	@Before(
-	//		value = "execution(* com.example.challange.routes.sw.SwRouter.getOneResource(..)) && args(resource, index)",
-	//		argNames = "resource,index"
-	//	)
-	public void getSwOneResource(String resource, Integer index) throws BadRequestError {
-		checkResource(resource, index, false);
-	}
-
-	//	@Before(
-	//		value = "execution(* com.example.challange.routes.sw.SwRouter.updateItem(..)) && args(resource, index, body)",
-	//		argNames = "resource,index,body"
-	//	)
-	public void swValidateRequestBody(String resource, Integer index, Map<String, Object> body)
-		throws BadRequestError {
-		checkResource(resource, index, false);
-		validateBody(resource, body);
-	}
-
-	/**
-	 * check the resource before get inside the route
-	 * and validate if is able to do something.
-	 * <p>
-	 * will return the found content item if needed
-	 */
-	private Map<String, Object> checkResource(String resource) throws BadRequestError {
-		return checkResource(resource, null, false);
-	}
-
-	/**
-	 * check the resource before get inside the route
-	 * and validate if is able to do something.
-	 * <p>
-	 * will return the found content item if needed
-	 */
 	private Map<String, Object> checkResource(String resource, Integer index, boolean canGet)
 		throws BadRequestError {
 		if (DEBUG) {
 			return Collections.emptyMap();
 		}
 
-		Map<String, SWBaseDTO<?>> cache = SimpleCache.getData();
+		Map<String, Object> cache = SimpleCache.getData();
 		if (!cache.containsKey(resource)) {
 			throw new BadRequestError("resource '" + resource + "' could not be found!");
 		}
 
 		Map<String, Object> item = null;
 		if (index != null) {
-			Map<String, Object> content = (Map<String, Object>) cache.get(resource).getData();
+			Map<String, Object> content = (Map<String, Object>) cache.get(resource);
 			List<Map<String, Object>> results = (List<Map<String, Object>>) content.get("results");
 
 			if (index < 0 || index > results.size()) {

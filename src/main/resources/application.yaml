@@ -2,6 +2,10 @@ debug: ${DEBUG:false}
 mode: "template"
 version: '@project.version@'
 
+# jdbc:sqlite::memory:
+# jdbc:postgresql://localhost:5432/starwars
+# jdbc:h2:mem:swdb
+
 server:
   port: "${APP_PORT:3000}"
   servlet:
@@ -20,6 +24,32 @@ spring:
     exclude-fields-without-expose-annotation: "true"
   mvc:
     static-path-pattern: "/${spring.application.name}/static/**"
+  datasource:
+    driver-class-name: "${custom.database.driver.used}"
+    url: "${DB_URL}"
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
+  jpa:
+    database-platform: "${custom.database.dialect.used}"
+    generate-ddl: false
+    show-sql: ${debug}
+    defer-datasource-initialization: true
+
+  h2:
+    console:
+      enabled: ${debug}
+  flyway:
+    enabled: true
+    url: "${DB_URL}"
+    user: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    driver-class-name: "${custom.database.driver.used}"
+    sql-migration-separator: "-"
+    sql-migration-prefix: "0000"
+    locations: "classpath:migrations"
+    table: "migrations"
 
 logging:
   charset:
@@ -32,6 +62,8 @@ logging:
     rollingpolicy:
       clean-history-on-start: "${debug}"
       max-file-size: "20MB"
+  level:
+    web: debug
 
 springdoc:
   api-docs:
@@ -48,3 +80,14 @@ custom:
     connection:
       request-timeout: 10000
       response-timeout: 10000
+  database:
+    dialect:
+      used: "${custom.database.dialect.h2}"
+      postgres: "org.hibernate.dialect.PostgresPlusDialect"
+      sqlite: "org.sqlite.JDBC"
+      h2: "org.hibernate.dialect.H2Dialect"
+    driver:
+      used: "${custom.database.driver.h2}"
+      postgres: "org.postgresql.Driver"
+      sqlite: "org.hibernate.dialect.??"
+      h2: "org.h2.Driver"

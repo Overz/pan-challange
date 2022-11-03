@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "cleaning..."
+rm -rvf ./tmp/logs/**/*.log

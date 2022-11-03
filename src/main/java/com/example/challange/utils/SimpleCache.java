@@ -1,9 +1,7 @@
 package com.example.challange.utils;
 
 import static com.example.challange.utils.Constants.ACCEPTED_RESOURCES;
-import static com.example.challange.utils.Constants.Qualifiers.SW_API;
 
-import com.example.challange.entities.SWBaseDTO;
 import com.example.challange.services.SWApiService;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +10,6 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -20,11 +17,10 @@ import org.springframework.stereotype.Component;
 public class SimpleCache {
 
 	@Autowired
-	@Qualifier(SW_API)
 	private SWApiService api;
 
 	@Getter
-	private static final Map<String, SWBaseDTO<?>> data = new HashMap<>();
+	private static final Map<String, Object> data = new HashMap<>();
 
 	public void setup() {
 		try {
@@ -44,7 +40,7 @@ public class SimpleCache {
 					item.put("version", 0);
 				}
 
-				data.put(key, new SWBaseDTO<>(url, content));
+				data.put(key, content);
 			}
 		} catch (Exception e) {
 			log.error("Service was not able to request or cache the data", e);

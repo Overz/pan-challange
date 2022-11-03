@@ -6,9 +6,9 @@ import static org.mockito.Mockito.when;
 
 import com.example.challange.File;
 import com.example.challange.Setup;
-import com.example.challange.utils.SimpleCache;
 import com.example.challange.services.SWApiService;
 import com.example.challange.utils.Json;
+import com.example.challange.utils.SimpleCache;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeAll;
